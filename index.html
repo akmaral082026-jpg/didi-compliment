@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DiDi | Сізге комплимент</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ min-height:100vh;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ background:linear-gradient(145deg,#fff8fb,#ffd9e8);
+ font-family:Georgia,serif;
+ padding:20px;
+ color:#673049;
+}
+.card{
+ width:100%;
+ max-width:430px;
+ text-align:center;
+ padding:42px 24px;
+ border:2px solid #f2a5c5;
+ border-radius:25px;
+ background:#fffafc;
+ box-shadow:0 12px 40px #db7ca340;
+}
+.crown{font-size:35px;color:#ec6ca2}
+.brand{
+ font-size:65px;
+ font-weight:bold;
+ background:linear-gradient(120deg,#ed5796,#ffb2cf,#c73579);
+ -webkit-background-clip:text;
+ background-clip:text;
+ color:transparent;
+}
+.shop{
+ letter-spacing:3px;
+ font-size:12px;
+ color:#9c5376;
+}
+h1{
+ font-size:28px;
+ color:#dc4e8c;
+ margin-top:35px;
+}
+.heart{font-size:30px;color:#ec77a9}
+.compliment{
+ margin:30px 0;
+ padding:30px 12px;
+ border-top:1px solid #f3b2cc;
+ border-bottom:1px solid #f3b2cc;
+ font-size:25px;
+ line-height:1.6;
+ min-height:180px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+}
+.note{
+ color:#9c6b82;
+ font-size:14px;
+ line-height:1.7;
+}
+footer{
+ margin-top:30px;
+ color:#d55b94;
+ font-size:13px;
+ letter-spacing:1px;
+}
+</style>
+</head>
+<body>
+<main class="card">
+ <div class="crown">♛</div>
+ <div class="brand">DiDi</div>
+ <div class="shop">КОСМЕТИКА ДҮКЕНІ</div>
+ <div class="heart">♥️</div>
+ <h1>Сізге арналған комплимент</h1>
+ <div class="compliment" id="compliment"></div>
+ <p class="note">
+ Бүгінгі комплиментіңіз тек сізге арналған.
+ Ертең қайта келіп, жаңа жылы сөз алыңыз!
+ </p>
+ <footer>DiDi — СҰЛУЛЫҚ СІЗДЕН БАСТАЛАДЫ ♡</footer>
+</main>
+
+<script>
+const compliments=[
+"Сіздің күлкіңіз айналаңызды нұрландырады!",
+"Сіз бүгін ерекше әдемісіз!",
+"Сіздің сұлулығыңыз табиғилығыңызда!",
+"Сіз ең әдемі сөздерге лайықсыз!",
+"Күлімсіреңіз, сізге күлкі жарасады!",
+"Сіздің жанарыңыз ерекше шуақ шашады!",
+"Сіз өзіңіз ойлағаннан да кереметсіз!",
+"Сіздің нәзіктігіңіз жүрекке жылу сыйлайды!",
+"Бүгінгі күніңіз өзіңіздей әдемі өтсін!",
+"Сіз жүрген жерге қуаныш сыйлайсыз!",
+"Сіздің сұлулығыңыз қайталанбас!",
+"Өзіңізді жақсы көріңіз, сіз соған лайықсыз!",
+"Сіз әлемді әдемірек етесіз!",
+"Сіздің болмысыңыз ерекше сүйкімді!",
+"Сізге бақыт пен әсемдік қатар жарасады!",
+"Сіздің күлкіңіз — ең қымбат әшекей!",
+"Сіз әрқашан жарқырауға лайықсыз!",
+"Сіздің жүрегіңіз сұлулығыңыздан кем емес!",
+"Сіз бүгін айналаңызға шабыт сыйлайсыз!",
+"Сіздің ерекшелігіңіз — басты байлығыңыз!",
+"Әр күніңіз қуанышқа толы болсын!",
+"Сізге ең әдемі сәттер бұйырсын!",
+"Сіздің мейіріміңіз жүзіңізден көрінеді!",
+"Сіз өз сұлулығыңызбен ерекшеленесіз!",
+"Сіздің сенімділігіңіз сізге жарасады!",
+"Сізді көрген жанның көңілі көтеріледі!",
+"Сіз керемет әсер қалдырасыз!",
+"Сіздің әсемдігіңіз — өзіңізге тән!",
+"Сіз бүгін де жарқырап тұрсыз!",
+"Әлемде сіздей ерекше жан біреу ғана!"
+];
+
+const storageKey="didi-daily-compliment-v1";
+const today=new Date();
+const dateKey=[
+ today.getFullYear(),
+ String(today.getMonth()+1).padStart(2,"0"),
+ String(today.getDate()).padStart(2,"0")
+].join("-");
+
+let saved=null;
+try{
+ saved=JSON.parse(localStorage.getItem(storageKey));
+}catch(e){}
+
+let index;
+
+if(saved && saved.date===dateKey &&
+ Number.isInteger(saved.index) &&
+ saved.index>=0 && saved.index<compliments.length){
+ index=saved.index;
+}else{
+ const previous=saved && Number.isInteger(saved.index)
+  ? saved.index : -1;
+
+ do{
+  index=Math.floor(Math.random()*compliments.length);
+ }while(index===previous);
+
+ try{
+  localStorage.setItem(storageKey,JSON.stringify({
+   date:dateKey,
+   index:index
+  }));
+ }catch(e){}
+}
+
+document.getElementById("compliment").textContent=
+ "♡ "+compliments[index]+" ♡";
+</script>
+</body>
+</html>
